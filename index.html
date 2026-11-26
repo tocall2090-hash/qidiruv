@@ -1,371 +1,257 @@
-<!DOCTYPE html>
+<!    padding: 12px !important;
+    box-sizing: border-box !important;
+  <!DOCTYPE html>
 <html lang="uz">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Qidir!</title>
-    <style>
-        :root {
-            --bg: #ffffff;
-            --text: #202124;
-            --sub: #5f6368;
-            --border: #dfe1e5;
-            --btn: #f8f9fa;
-            --menu: #ffffff;
-            --hover: #f1f3f4;
-        }
-        body.dark {
-            --bg: #202124;
-            --text: #e8eaed;
-            --sub: #9aa0a6;
-            --border: #5f6368;
-            --btn: #303134;
-            --menu: #292a2d;
-            --hover: #3c4043;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-        body {
-                        background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), url('IMG_20261125_135637_844.jpg') no-repeat center center fixed;
-            background-size: cover;
-
-
-            color: var(--text);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            transition: 0.3s;
-        }
-        header {
-            display: flex;
-            justify-content: flex-end;
-            padding: 15px 20px;
-            position: relative;
-        }
-        .menu-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        .menu-btn:hover { background: var(--hover); }
-        .menu-btn span {
-            width: 24px;
-            height: 3px;
-            background: var(--sub);
-            border-radius: 2px;
-        }
-        .dropdown {
-            display: none;
-            position: absolute;
-            top: 60px;
-            right: 20px;
-            width: 250px;
-            background: var(--menu);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            padding: 15px;
-            z-index: 999;
-        }
-        .dropdown.open { display: block; }
-        .sec { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
-        .sec:last-child { margin: 0; padding: 0; border: none; }
-        .title { font-size: 12px; font-weight: bold; color: var(--sub); margin-bottom: 8px; text-transform: uppercase; }
-        .item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .item:hover { background: var(--hover); }
-        .langs { display: flex; gap: 5px; }
-        .l-btn {
-            flex: 1;
-            padding: 6px;
-            border: 1px solid var(--border);
-            background: transparent;
-            color: var(--text);
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        .l-btn.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
-        main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 0 20px;
-            margin-top: -50px;
-        }
-        .logo { font-size: 68px; font-weight: bold; letter-spacing: -2px; margin-bottom: 25px; user-select: none; }
-        .logo span:nth-child(1), .logo span:nth-child(4) { color: #4285F4; }
-        .logo span:nth-child(2), .logo span:nth-child(6) { color: #EA4335; }
-        .logo span:nth-child(3) { color: #FBBC05; }
-        .logo span:nth-child(5) { color: #34A853; }
-        form { width: 100%; max-width: 560px; }
-        .input-wrap {
-            display: flex;
-            align-items: center;
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 0 16px;
-            height: 46px;
-            background: var(--bg);
-        }
-        .input-wrap:focus-within { box-shadow: 0 1px 6px rgba(32,33,36,0.28); border-color: transparent; }
-        .input-wrap input {
-            flex: 1;
-            border: none;
-            outline: none;
-            background: transparent;
-            color: var(--text);
-            font-size: 16px;
-            margin-left: 10px;
-        }
-        .btns { margin-top: 22px; display: flex; gap: 10px; justify-content: center; }
-        .btns button {
-            background: var(--btn);
-            border: 1px solid var(--btn);
-            color: var(--text);
-            padding: 10px 16px;
-            border-radius: 4px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-        .btns button:hover { border-color: var(--border); }
-        footer {
-            padding: 15px 25px;
-            border-top: 1px solid var(--border);
-            color: var(--sub);
-            font-size: 13px;
-            display: flex;
-            justify-content: space-between;
-        }
-    </style>
-</head>
-<body>
-    
-
-        <button class="menu-btn" id="mBtn" type="button">
-            <span></span><span></span><span></span>
-        </button>
-        <div class="dropdown" id="drop">
-            <div class="sec">
-                <div class="title" id="tSet">Sozlamalar</div>
-                <div class="item" id="dToggle">
-                    <span id="tDark">Tungi rejim</span>
-                    <span id="dStat">O'chiq</span>
-                </div>
-                <div class="item" onclick="document.getElementById('qIn').value=''">
-                    <span id="tClear">Maydonni tozalash</span>
-                </div>
-            </div>
-            <div class="sec">
-                <div class="title" id="tLang">Tilni tanlang</div>
-                <div class="langs">
-                    <button type="button" class="l-btn active" onclick="setLang('uz', this)">O'zb</button>
-                    <button type="button" class="l-btn" onclick="setLang('ru', this)">Рус</button>
-                    <button type="button" class="l-btn" onclick="setLang('en', this)">Eng</button>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main>
-        <div class="logo"><span>Q</span><span>i</span><span>d</span><span>i</span><span>r</span><span>!</span></div>
-                <div id="sForm" style="width:100%; max-width:560px;">
-
-            <div class="input-wrap">
-                <span>🔍</span>
-                <input type="text" name="q" id="qIn" placeholder="Google'dan izlash..." required>
-            </div>
-            <div class="btns">
-                <button type="submit" id="bSearch">Qidirish</button>
-                <button type="submit" name="btnI" value="1" id="bLucky">Omadimni sinayman</button>
-            </div>
-        </form>
-    </main>
-
-    <footer>
-        <span id="fCountry">O'zbekiston</span>
-        <span>Qidiruv v2.0</span>
-    </footer>
-
-    <script>
-        const mBtn = document.getElementById('mBtn');
-        const drop = document.getElementById('drop');
-        mBtn.onclick = (e) => { e.stopPropagation(); drop.classList.toggle('open'); };
-        document.onclick = (e) => { if (!drop.contains(e.target)) drop.classList.remove('open'); };
-
-        let dark = false, lang = 'uz';
-        document.getElementById('dToggle').onclick = () => {
-            dark = !dark;
-            document.body.classList.toggle('dark');
-            updStat();
-        };
-
-        function updStat() {
-            const s = { uz: dark ? "Yoniq" : "O'chiq", ru: dark ? "Вкл" : "Выкл", en: dark ? "On" : "Off" };
-            document.getElementById('dStat').textContent = s[lang];
-        }
-
-        const txt = {
-            uz: { s: "Sozlamalar", d: "Tungi rejim", c: "Maydonni tozalash", l: "Tilni tanlang", p: "Google'dan izlash...", b1: "Qidirish", b2: "Omadimni sinayman", f: "O'zbekiston" },
-            ru: { s: "Настройки", d: "Тёмная тема", c: "Очистить поле", l: "Выберите язык", p: "Поиск в Google...", b1: "Поиск", b2: "Мне повезёт!", f: "Узбекистан" },
-            en: { s: "Settings", d: "Dark theme", c: "Clear input", l: "Select language", p: "Search Google...", b1: "Search", b2: "I'm Feeling Lucky", f: "Uzbekistan" }
-        };
-
-        function setLang(l, el) {
-            lang = l;
-            const t = txt[l];
-            document.getElementById('tSet').textContent = t.s;
-            document.getElementById('tDark').textContent = t.d;
-            document.getElementById('tClear').textContent = t.c;
-            document.getElementById('tLang').textContent = t.l;
-            document.getElementById('qIn').placeholder = t.p;
-            document.getElementById('bSearch').textContent = t.b1;
-            document.getElementById('bLucky').textContent = t.b2;
-            document.getElementById('fCountry').textContent = t.f;
-            updStat();
-            document.querySelectorAll('.l-btn').forEach(b => b.classList.remove('active'));
-            el.classList.add('active');
-        }
-    </script>
-    <!-- Yangi dizayn va funksiyalar qo'shimchasi (soatsiz) -->
-    <style>
-        .menu-btn {
-            background: rgba(0, 0, 0, 0.45) !important;
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.35) !important;
-            width: 44px; height: 44px;
-            align-items: center; justify-content: center;
-        }
-        .menu-btn span { background: #ffffff !important; }
-        .logo { text-shadow: 0 3px 12px rgba(0,0,0,0.5); }
-        .input-wrap {
-            background: rgba(255, 255, 255, 0.9) !important;
-            backdrop-filter: blur(10px);
-        }
-        .btns button {
-            background: rgba(255, 255, 255, 0.9) !important;
-            backdrop-filter: blur(8px);
-            border-radius: 8px !important;
-        }
-        .shortcuts { display: flex; gap: 18px; margin-top: 26px; justify-content: center; flex-wrap: wrap; }
-        .sc-item { display: flex; flex-direction: column; align-items: center; text-decoration: none; color: #fff; text-shadow: 0 1px 4px rgba(0,0,0,0.8); font-size: 12px; width: 62px; }
-        .sc-icon { width: 46px; height: 46px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 6px; box-shadow: 0 3px 10px rgba(0,0,0,0.2); }
-        footer { background: rgba(0, 0, 0, 0.45); color: #fff !important; border: none !important; }
-    </style>
-
-    <script>
-        (function() {
-            const main = document.querySelector('main');
-            const form = document.querySelector('form');
-            const inputWrap = document.querySelector('.input-wrap');
-
-            // 1. Mikrofon tugmasini qo'shish
-            const micBtn = document.createElement('button');
-            micBtn.type = 'button';
-            micBtn.textContent = '🎤';
-            micBtn.style.cssText = 'background:none; border:none; font-size:18px; cursor:pointer; padding:4px;';
-            micBtn.onclick = () => {
-                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-                if (!SR) return alert("Ovozli qidiruv bu brauzerda ishlamaydi.");
-                const rec = new SR();
-                rec.lang = 'uz-UZ';
-                rec.onresult = (e) => {
-                    document.getElementById('qIn').value = e.results[0][0].transcript;
-                    form.submit();
-                };
-                rec.start();
-            };
-            inputWrap.appendChild(micBtn);
-            
-        })();
-    </script>
-            <!-- Haqiqiy Google Programmable Search ulanishi -->
-    <style>
-  .google-box {
-    width: 100%;
-    max-width: 650px;
-    margin: 15px auto;
-    padding: 0 12px;
-    box-sizing: border-box;
-  }
-  .gsc-control-cse {
-    background: rgba(255, 255, 255, 0.96) !important;
-    border: none !important;
-    border-radius: 24px !important;
-    padding: 10px 14px !important;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
-  }
-  /* Natijalar oynasini to'liq ekran (Bing uslubida) qilish */
-  .gsc-results-wrapper-overlay {
-    width: 100% !important;
-    height: 100% !important;
-    top: 0 !important;
-    left: 0 !important;
-    border-radius: 0 !important;
-    background: #f3f4f6 !important;
-    padding: 12px !important;
-    box-sizing: border-box !important;
-  }
-  /* Har bir natijani alohida oq karta ko'rinishiga keltirish */
-  .gsc-webResult.gsc-result {
-    background: #ffffff !important;
-    border-radius: 14px !important;
-    padding: 14px !important;
-    margin-bottom: 12px !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
-    border: none !important;
-  }
-  .gs-title, .gs-snippet {
-    height: auto !important;
-    line-height: 1.45 !important;
-    white-space: normal !important;
-    overflow: visible !important;
-  }
-  .gs-title a {
-    font-size: 18px !important;
-    color: #1a0dab !important;
-    text-decoration: none !important;
-    display: inline !important;
-  }
-  .gs-snippet {
-    font-size: 14px !important;
-    color: #374151 !important;
-    margin-top: 6px !important;
-  }
-    #sForm { display: none !important; }
-</style>
-
-<div class="google-box">
-  <div class="gcse-search"></div>
-</div>
-
-<script>
-  (function() {
-    var main = document.querySelector('main');
-    var gBox = document.querySelector('.google-box');
-    if (main && gBox) {
-      main.appendChild(gBox);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qidir!</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #202124;
+      --sub: #5f6368;
+      --border: #dfe1e5;
+      --menu: #ffffff;
+      --hover: #f1f3f4;
     }
 
-    var s = document.createElement('script');
-    s.async = true;
-    s.src = 'https://cse.google.com/cse.js?cx=e0a667d22dd1a4087';
+    body.dark {
+      --bg: #202124;
+      --text: #e8eaed;
+      --sub: #9aa0a6;
+      --border: #5f6368;
+      --menu: #292a2d;
+      --hover: #3c4043;
+    }
 
-        
-    document.head.appendChild(s);
-  })();
-</script>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url('IMG_20261125_135637_1.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      transition: 0.3s;
+    }
+
+    /* Yuqori qism va Menyu */
+    header {
+      display: flex;
+      justify-content: flex-start;
+      padding: 15px 20px;
+      position: relative;
+      z-index: 1000;
+    }
+
+    .menu-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1.5px solid rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      backdrop-filter: blur(4px);
+    }
+
+    .menu-btn span {
+      width: 20px;
+      height: 2.5px;
+      background: #ffffff;
+      border-radius: 2px;
+    }
+
+    .dropdown {
+      display: none;
+      position: absolute;
+      top: 68px;
+      left: 20px;
+      width: 240px;
+      background: var(--menu);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      padding: 15px;
+      z-index: 1001;
+    }
+
+    .dropdown.open {
+      display: block;
+    }
+
+    .theme-btn {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: transparent;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .theme-btn:hover {
+      background: var(--hover);
+    }
+
+    /* Asosiy markaziy qism */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 15px 60px;
+      width: 100%;
+    }
+
+    /* Rangli Qidir! logotipi */
+    .logo {
+      font-size: 64px;
+      font-weight: bold;
+      letter-spacing: -2px;
+      margin-bottom: 22px;
+      text-shadow: 0 3px 12px rgba(0, 0, 0, 0.35);
+      user-select: none;
+    }
+
+    .logo span:nth-child(1) { color: #4285F4; } /* Q */
+    .logo span:nth-child(2) { color: #EA4335; } /* i */
+    .logo span:nth-child(3) { color: #FBBC05; } /* d */
+    .logo span:nth-child(4) { color: #4285F4; } /* i */
+    .logo span:nth-child(5) { color: #34A853; } /* r */
+    .logo span:nth-child(6) { color: #EA4335; } /* ! */
+
+    /* Google CSE Qidiruv qutisi dizayni */
+    .google-box {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .gsc-control-cse {
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+
+    form.gsc-search-box {
+      margin: 0 !important;
+    }
+
+    table.gsc-search-box {
+      background: rgba(255, 255, 255, 0.96) !important;
+      border-radius: 30px !important;
+      padding: 4px 10px !important;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+      overflow: hidden;
+    }
+
+    .gsc-input-box {
+      border: none !important;
+      background: transparent !important;
+    }
+
+    input.gsc-input {
+      font-size: 16px !important;
+      color: #202124 !important;
+      background: transparent !important;
+    }
+
+    button.gsc-search-button-v2 {
+      border-radius: 24px !important;
+      padding: 10px 18px !important;
+      background-color: #4285F4 !important;
+      border: none !important;
+      cursor: pointer !important;
+    }
+
+    /* Qidiruv natijalari (sayt ichida ochiladi) */
+    .gsc-results-wrapper-overlay,
+    .gsc-results-wrapper-visible {
+      background: #f3f4f6 !important;
+      border-radius: 16px !important;
+      padding: 14px !important;
+      margin-top: 15px !important;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+    }
+
+    .gsc-webResult.gsc-result {
+      background: #ffffff !important;
+      border-radius: 12px !important;
+      padding: 14px !important;
+      margin-bottom: 10px !important;
+      border: none !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06) !important;
+    }
+
+    .gs-title a {
+      font-size: 17px !important;
+      color: #1a0dab !important;
+      text-decoration: none !important;
+    }
+
+    .gs-snippet {
+      font-size: 14px !important;
+      color: #374151 !important;
+      margin-top: 5px !important;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <button class="menu-btn" onclick="toggleMenu()" aria-label="Menyu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="dropdown" id="dropdownMenu">
+      <button class="theme-btn" onclick="toggleTheme()">🌓 Tungi / Kunduzgi rejim</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="logo">
+      <span>Q</span><span>i</span><span>d</span><span>i</span><span>r</span><span>!</span>
+    </div>
+
+    <div class="google-box">
+      <div class="gcse-search"></div>
+    </div>
+  </main>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('dropdownMenu').classList.toggle('open');
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+    }
+
+    window.addEventListener('click', function(e) {
+      if (!e.target.closest('.menu-btn') && !e.target.closest('.dropdown')) {
+        document.getElementById('dropdownMenu').classList.remove('open');
+      }
+    });
+  </script>
+
+  <!-- Google Programmable Search Engine (sayt ichida qidirish uchun) -->
+  <script async src="https://google.com"></script>
 
 </body>
 </html>
