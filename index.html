@@ -180,7 +180,8 @@
 
     <main>
         <div class="logo"><span>Q</span><span>i</span><span>d</span><span>i</span><span>r</span><span>!</span></div>
-        <form action="https://google.com" method="GET">
+                <div id="sForm" style="width:100%; max-width:560px;">
+
             <div class="input-wrap">
                 <span>🔍</span>
                 <input type="text" name="q" id="qIn" placeholder="Google'dan izlash..." required>
@@ -289,6 +290,52 @@
             main.appendChild(scDiv);
         })();
     </script>
+        <div id="resBox" style="width:100%; max-width:560px; margin:20px auto; padding:0 10px;"></div>
+
+    <script>
+        (function() {
+            const btnSearch = document.getElementById('bSearch');
+            const btnLucky = document.getElementById('bLucky');
+            const input = document.getElementById('qIn');
+            const resBox = document.getElementById('resBox');
+            document.querySelector('main').appendChild(resBox);
+
+            async function doSearch() {
+                const q = input.value.trim();
+                if (!q) return;
+                resBox.innerHTML = '<div style="background:rgba(255,255,255,0.9); padding:15px; border-radius:12px; text-align:center;">Qidirilmoqda...</div>';
+
+                try {
+                    const domain = 'uz.wikipedia.org';
+                    const api = 'https://' + domain + '/w/api.php?action=query&list=search&srsearch=' + encodeURIComponent(q) + '&utf8=&format=json&origin=*';
+                    const r = await fetch(api);
+                    const d = await r.json();
+                    const list = d.query.search;
+
+                    if (!list.length) {
+                        resBox.innerHTML = '<div style="background:rgba(255,255,255,0.9); padding:15px; border-radius:12px;">Hech narsa topilmadi.</div>';
+                        return;
+                    }
+
+                    resBox.innerHTML = list.slice(0, 5).map(item => `
+                        <div style="background:rgba(255,255,255,0.92); backdrop-filter:blur(8px); padding:14px; border-radius:12px; margin-bottom:10px; box-shadow:0 2px 8px rgba(0,0,0,0.15); text-align:left;">
+                            <a href="https://${domain}/wiki/${encodeURIComponent(item.title)}" target="_blank" style="color:#1a0dab; font-size:16px; font-weight:bold; text-decoration:none;">${item.title}</a>
+                            <p style="color:#333; font-size:13px; margin-top:5px;">${item.snippet}...</p>
+                        </div>
+                    `).join('');
+                } catch (e) {
+                    resBox.innerHTML = '<div style="background:rgba(255,255,255,0.9); padding:15px; border-radius:12px;">Xatolik yuz berdi.</div>';
+                }
+            }
+
+            btnSearch.type = 'button';
+            btnLucky.type = 'button';
+            btnSearch.onclick = doSearch;
+            btnLucky.onclick = doSearch;
+            input.onkeypress = (e) => { if (e.key === 'Enter') doSearch(); };
+        })();
+    </script>
+
 </body>
 </html>
 
