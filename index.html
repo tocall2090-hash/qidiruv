@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+7<!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
@@ -249,26 +249,31 @@
             document.getElementById('clearHistoryText').textContent = t.clearHistoryText;
             document.getElementById('langTitle').textContent = t.langTitle;
             document.getElementById('searchInput').placeholder = t.placeholder;
-            document.getElementById('searchBtnText').textContent = t.searchBtn;
+            document.getElementById('searchBtnText').textContent = 
+                t.searchBtn;
             document.getElementById('luckyBtnText').textContent = t.luckyBtn;
             document.getElementById('countryText').textContent = t.country;
             updateStatusText();
-            document.querySelectorAll('.lang-btn').forEach(btn => 
-                     function performSearch(event) {
-         event.preventDefault();
-         const query = document.getElementById('searchInput').value.trim();
-         if (query) {
-             window.location.href = 'https://google.com' + encodeURIComponent(query);
-         }
-     }
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+        }
 
-     function luckySearch() {
-         const query = document.getElementById('searchInput').value.trim();
-         if (query) {
-             window.location.href = 'https://google.com' + encodeURIComponent(query) + '&btnI=1';
-         } else {
-             alert("Iltimos, avval biror so'z kiriting!");
-         
+        function performSearch(event) {
+            event.preventDefault();
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                window.location.href = 'https://google.com' + '/search?q=' + encodeURIComponent(query);
+            }
+        }
 
+        function luckySearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                window.location.href = 'https://google.com' + '/search?q=' + encodeURIComponent(query) + '&btnI=1';
+            } else {
+                alert("Iltimos, avval biror so'z kiriting!");
+            }
+        }
+    </script>
 </body>
 </html>
