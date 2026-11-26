@@ -253,21 +253,22 @@
             document.getElementById('luckyBtnText').textContent = t.luckyBtn;
             document.getElementById('countryText').textContent = t.country;
             updateStatusText();
-            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            btnElement.classList.add('active');
-        }
+            document.querySelectorAll('.lang-btn').forEach(btn => 
+                     function performSearch(event) {
+         event.preventDefault();
+         const query = document.getElementById('searchInput').value.trim();
+         if (query) {
+             window.location.href = 'https://google.com' + encodeURIComponent(query);
+         }
+     }
 
-        function performSearch(event) {
-            event.preventDefault();
-            const query = document.getElementById('searchInput').value.trim();
-            if (query) window.open('https://google.com' + encodeURIComponent(query), '_blank');
-        }
+     function luckySearch() {
+         const query = document.getElementById('searchInput').value.trim();
+         if (query) {
+             window.location.href = 'https://google.com' + encodeURIComponent(query) + '&btnI=1';
+         } else {
+             alert("Iltimos, avval biror so'z kiriting!");
+         
 
-        function luckySearch() {
-            const query = document.getElementById('searchInput').value.trim();
-            if (query) window.open('https://google.com' + encodeURIComponent(query) + '&btnI=1', '_blank');
-            else alert("Iltimos, avval biror so'z kiriting!");
-        }
-    </script>
 </body>
 </html>
