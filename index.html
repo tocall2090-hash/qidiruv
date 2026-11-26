@@ -343,28 +343,23 @@
     color: #374151 !important;
     margin-top: 6px !important;
   }
-  #sForm { display: none !important; }
+  #sForm { display: none !important; 
 
+<div class="google-box">
+<script async src="https://google.com"></script>
 
-    <div class="google-box">
-        
-        <div class="gcse-search"></div>
-    </div>
+  <div class="gcse-search"></div>
+</div>
 
-        <script>
-        (function() {
-            const main = document.querySelector('main');
-            const gBox = document.querySelector('.google-box');
-            main.appendChild(gBox);
-
-            const s = document.createElement('script');
-            s.async = true;
-            s.src = 'https://cse.google.com' + '/cse.js?cx=e0a667d22dd1a4037';
-            document.head.appendChild(s);
-        })();
-    </script>
-
-
+<script>
+  (function() {
+    const main = document.querySelector('main');
+    const gBox = document.querySelector('.google-box');
+    if (main && gBox) {
+      main.appendChild(gBox);
+    }
+  })();
+</script>
 
 </body>
 </html>
