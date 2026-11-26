@@ -255,6 +255,9 @@
     function toggleMenu() {
       document.getElementById('dropdownMenu').classList.toggle('open');
     }
+    function toggleMenu() {
+      document.getElementById('dropdownMenu').classList.toggle('open');
+    }
 
     function toggleTheme() {
       document.body.classList.toggle('dark');
@@ -266,42 +269,47 @@
       }
     });
 
-    // Sayt ichida qidirish funksiyasi (Googlega o'tib ketmaydi)
-    async function startSearch(event) {
+    function startSearch(event) {
       event.preventDefault();
-      const query = document.getElementById('searchInput').value.trim();
-      const resultsBox = document.getElementById('resultsBox');
-
+      var query = document.getElementById('searchInput').value.trim();
+      var resultsBox = document.getElementById('resultsBox');
       if (!query) return;
 
       resultsBox.style.display = 'flex';
       resultsBox.innerHTML = '<div class="status-text">Qidirilmoqda...</div>';
 
-      try {
-        // Avval o'zbekcha Wikipediadan qidiradi
-        let res = await fetch(`https://wikipedia.org{encodeURIComponent(query)}&format=json&origin=*`);
-        let data = await res.json();
-        let items = data.query.search;
+      // Eski skriptni tozalash
+      var oldScript = document.getElementById('wikiSearchScript');
+      if (oldScript) oldScript.remove();
 
-        // Agar o'zbekchada topilmasa, ruscha/inglizchadan qidiradi
-        if (!items || items.length === 0) {
-          res = await fetch(`https://wikipedia.org{encodeURIComponent(query)}&format=json&origin=*`);
-          data = await res.json();
-          items = data.query.search;
-        }
+      // O'zbekcha Wikipediadan bloklanmasdan qidirish
+      var script = document.createElement('script');
+      script.id = 'wikiSearchScript';
+      script.src = 'https://wikipedia.org' + encodeURIComponent(query) + '&format=json&callback=natijalarniKorsat';
 
-        if (!items || items.length === 0) {
-          resultsBox.innerHTML = '<div class="status-text">Hech narsa topilmadi. Boshqa so‘z yozib ko‘ring.</div>';
-          return;
-        }
+      document.body.appendChild(script);
+    }
 
-        resultsBox.innerHTML = '';
-        items.slice(0, 6).forEach(item => {
-          const cleanSnippet = item.snippet.replace(/<\/?[^>]+(>|$)/g, "");
-          const card = document.createElement('div');
-          card.className = 'result-card';
-          card.innerHTML = `
-            <h3>${item.title}</h3>
+    function natijalarniKorsat(data) {
+      var resultsBox = document.getElementById('resultsBox');
+      var items = (data && data.query && data.query.search) ? data.query.search : [];
+
+      if (items.length === 0) {
+        resultsBox.innerHTML = '<div class="status-text">Hech narsa topilmadi. Boshqa so‘z yozib ko‘ring.</div>';
+        return;
+      }
+
+      resultsBox.innerHTML = '';
+      items.slice(0, 6).forEach(function(item) {
+        var cleanSnippet = item.snippet.replace(/<\/?[^>]+(>|$)/g, '');
+        var card = document.createElement('div');
+        card.className = 'result-card';
+        card.innerHTML = '<h3>' + item.title + '</h3><p>' + cleanSnippet + '...</p>';
+        resultsBox.appendChild(card);
+      });
+    }
+  </script>
+
             <p>${cleanSnippet}...</p>
           `;
           resultsBox.appendChild(card);
