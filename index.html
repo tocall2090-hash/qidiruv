@@ -1,4 +1,4 @@
-7<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
@@ -295,7 +295,7 @@
   .google-box {
     width: 100%;
     max-width: 600px;
-    margin: 15px auto;
+    margin: 10px auto;
     padding: 0 12px;
     box-sizing: border-box;
     position: relative;
@@ -309,8 +309,20 @@
     padding: 12px !important;
     box-shadow: 0 4px 20px rgba(0,0,0,0.2);
   }
-  /* Google qidiruv tavsiyalari (Autocomplete) va natijalar oynasini to'g'rilash */
-  .gssb_c,
+  /* Global form va jadval stillarini Google qutisi ichida bekor qilish */
+  .gsc-control-cse form,
+  .gsc-control-cse table,
+  .gsc-control-cse tbody,
+  .gsc-control-cse tr,
+  .gsc-control-cse td {
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    vertical-align: top !important;
+    border-spacing: 0 !important;
+  }
+  /* Tepadagi katta oq bo'shliqni yo'qotish */
   .gsc-results-wrapper-overlay,
   .gsc-results-wrapper-visible {
     position: relative !important;
@@ -318,16 +330,34 @@
     left: 0 !important;
     width: 100% !important;
     height: auto !important;
-    max-height: 70vh !important;
-    overflow-y: auto !important;
+    max-height: 75vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
     box-shadow: none !important;
+    background: transparent !important;
+    display: block !important;
   }
-  .gssb_a, .gssb_a td, .gs-title, .gs-snippet {
+  .gsc-adBlock,
+  .gsc-above-wrapper-area,
+  .gcsc-find-more-on-google-root,
+  .gsc-resultsHeader,
+  .gsc-modal-background-image,
+  .gsc-results-close-btn {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .gs-title, .gs-snippet {
     height: auto !important;
     line-height: 1.4 !important;
-    padding: 6px 4px !important;
     white-space: normal !important;
     overflow: visible !important;
+    padding: 4px 0 !important;
+  }
+  .gs-title a {
+    font-size: 16px !important;
+    display: inline !important;
   }
   #sForm { display: none !important; }
 </style>
