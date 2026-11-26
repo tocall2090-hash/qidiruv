@@ -292,22 +292,42 @@
     </script>
             <!-- Haqiqiy Google Programmable Search ulanishi -->
     <style>
-        .google-box {
-            width: 100%;
-            max-width: 600px;
-            margin: 15px auto;
-            padding: 0 12px;
-        }
-        .gsc-control-cse {
-            background: rgba(255, 255, 255, 0.92) !important;
-            backdrop-filter: blur(10px);
-            border: none !important;
-            border-radius: 18px !important;
-            padding: 12px !important;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        }
-        #sForm { display: none !important; }
-    </style>
+  .google-box {
+    width: 100%;
+    max-width: 600px;
+    margin: 15px auto;
+    padding: 0 12px;
+    box-sizing: border-box;
+  }
+  .gsc-control-cse {
+    background: rgba(255, 255, 255, 0.94) !important;
+    backdrop-filter: blur(10px);
+    border: none !important;
+    border-radius: 18px !important;
+    padding: 15px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .gsc-control-cse *,
+  .gsc-results-wrapper-visible,
+  .gsc-webResult.gsc-result,
+  .gs-title,
+  .gs-snippet {
+    height: auto !important;
+    max-height: none !important;
+    line-height: 1.4 !important;
+    overflow: visible !important;
+  }
+  .gs-title a {
+    font-size: 16px !important;
+    display: inline !important;
+    line-height: 1.35 !important;
+  }
+  #sForm { display: none !important; }
+</style>
+
+    
 
     <div class="google-box">
         
