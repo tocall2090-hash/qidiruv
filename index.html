@@ -2,601 +2,495 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MUNDARIJA</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background-color: #f4f6f9;
-            color: #1c1e21;
-        }
-
-        /* Yuqori navigatsiya paneli (Header) */
-        header {
-            background-color: #ffffff;
-            height: 70px;
-            padding: 0 40px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-        }
-
-        .menu-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            padding: 5px;
-        }
-
-        .menu-btn span {
-            display: block;
-            width: 24px;
-            height: 2.5px;
-            background-color: #1c1e21;
-            border-radius: 2px;
-        }
-
-        .logo {
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            color: #1c1e21;
-            text-decoration: none;
-        }
-
-        /* Qidiruv maydoni */
-        .search-box {
-            display: flex;
-            align-items: center;
-            background-color: #e4e8ee;
-            border-radius: 20px;
-            padding: 10px 18px;
-            width: 320px;
-        }
-
-        .search-box svg {
-            width: 18px;
-            height: 18px;
-            color: #65676b;
-            margin-right: 10px;
-        }
-
-        .search-box input {
-            border: none;
-            background: transparent;
-            outline: none;
-            font-size: 15px;
-            width: 100%;
-            color: #1c1e21;
-        }
-
-        /* Asosiy qism */
-        main {
-            max-width: 900px;
-            margin: 35px auto;
-            padding: 0 20px;
-        }
-
-        /* Yangi post yaratish kartochkasi */
-        .create-post-card {
-            background-color: #ffffff;
-            border-radius: 14px;
-            height: 190px;
-            max-width: 580px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 14px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .create-post-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-        }
-
-        .plus-circle {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background-color: #d8dee6;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            color: #2c313a;
-            font-weight: 400;
-        }
-
-        .create-post-text {
-            font-size: 16px;
-            font-weight: 500;
-            color: #1c1e21;
-        }
-
-        /* Postlar ro'yxati */
-        .posts-container {
-            margin-top: 25px;
-            max-width: 580px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .post-item {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 14px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-        }
-
-        .post-item h3 {
-            margin-bottom: 8px;
-            font-size: 18px;
-        }
-
-        .post-item p {
-            color: #4b4f56;
-            line-height: 1.5;
-        }
-
-        /* Modal oyna (Post qo'shish uchun) */
-        .modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.45);
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: #ffffff;
-            padding: 24px;
-            border-radius: 14px;
-            width: 100%;
-            max-width: 450px;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-        }
-
-        .modal-content input,
-        .modal-content textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #d8dee6;
-            border-radius: 8px;
-            font-size: 15px;
-            outline: none;
-        }
-
-        .modal-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-        }
-
-        .btn {
-            padding: 10px 18px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-        }
-
-        .btn-cancel {
-            background: #e4e8ee;
-            color: #1c1e21;
-        }
-
-        .btn-save {
-            background: #1c1e21;
-            color: #ffffff;
-        }
-
-        /* Mobil moslashuvchanlik */
-        @media (max-width: 600px) {
-            header {
-                padding: 0 16px;
-            }
-            .search-box {
-                width: 170px;
-            }
-        }
-        /* Yon menyu (Sidebar) */
-.sidebar-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.45);
-    z-index: 200;
-}
-.sidebar-overlay.active { display: block; }
-
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: -290px;
-    width: 280px;
-    height: 100%;
-    background: #ffffff;
-    z-index: 300;
-    padding: 24px 20px;
-    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
-    transition: left 0.3s ease;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-.sidebar.active { left: 0; }
-
-.sidebar-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #e4e8ee;
-    padding-bottom: 14px;
-}
-.close-sidebar {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-}
-.menu-section-title {
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    color: #65676b;
-    margin-bottom: 10px;
-}
-.lang-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-.lang-btn {
-    padding: 10px 14px;
-    border: 1px solid #e4e8ee;
-    border-radius: 10px;
-    background: transparent;
-    font-size: 15px;
-    cursor: pointer;
-    text-align: left;
-}
-.lang-btn.active {
-    background-color: #1c1e21;
-    color: #ffffff;
-    border-color: #1c1e21;
-    font-weight: 600;
-}
-.settings-btn {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 14px;
-    border-radius: 10px;
-    border: none;
-    background-color: #f0f2f5;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-}
-
-/* Tungi rejim (Dark mode) */
-body.dark-mode { background-color: #121212; color: #e4e6eb; }
-body.dark-mode header,
-body.dark-mode .sidebar,
-body.dark-mode .create-post-card,
-body.dark-mode .post-item,
-body.dark-mode .modal-content { background-color: #1e1e1e; color: #e4e6eb; }
-body.dark-mode .menu-btn span { background-color: #e4e6eb; }
-body.dark-mode .logo,
-body.dark-mode .create-post-text { color: #ffffff; }
-
-    </style>
+    <meta name="description" content="Zamonaviy kompaniya veb-sayti">
+    <title>Kompaniya Nomi — Rasmiy Veb-sayt</title>
+    <!-- Keyingi bosqichda yoziladigan alohida CSS fayl -->
+    <link rel="stylesheet" href="style.css">
+    <!-- Ikonkalar uchun FontAwesome (3 chiziq, sozlamalar, til ikonkalarini chiroyli ko'rsatish uchun) -->
+    <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
 
-    <header>
-        <div class="header-left">
-            <button class="menu-btn" id="openMenuBtn" aria-label="Menyu"> 
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <a href="#" class="logo">MUNDARIJA</a>
-        </div>
+    <!-- =================================================================
+         1. YUQORI NAVIGATSIYA PANELI (HEADER)
+    ================================================================== -->
+    <header class="main-header" id="main-header">
+        <div class="container header-container">
+            
+            <!-- Chap tomonda Kompaniya Logotipi -->
+            <div class="header-logo">
+                <a href="#home" class="logo-link">
+                    <span class="logo-badge">K</span>
+                    <span class="logo-title">Kompaniya<strong>Uz</strong></span>
+                </a>
+            </div>
 
-        <div class="search-box">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input type="text" id="searchInput" placeholder="Qidirish...">
+            <!-- Markaziy asosiy havolalar -->
+            <nav class="desktop-nav">
+                <ul class="nav-menu">
+                    <li class="nav-item"><a href="#home" class="nav-link active">Bosh sahifa</a></li>
+                    <li class="nav-item"><a href="#about" class="nav-link">Kompaniya haqida</a></li>
+                    <li class="nav-item"><a href="#services" class="nav-link">Xizmatlar</a></li>
+                    <li class="nav-item"><a href="#projects" class="nav-link">Loyihalar</a></li>
+                    <li class="nav-item"><a href="#team" class="nav-link">Jamoa</a></li>
+                    <li class="nav-item"><a href="#contact" class="nav-link">Bog'lanish</a></li>
+                </ul>
+            </nav>
+
+            <!-- Tepa o'ng burchak: Instagram uslubidagi 3 chiziqli menyu tugmasi -->
+            <div class="header-right-controls">
+                <button class="instagram-menu-btn" id="open-drawer-btn" aria-label="Menyuni ochish" title="Sozlamalar va Akkount">
+                    <span class="hamburger-line line-1"></span>
+                    <span class="hamburger-line line-2"></span>
+                    <span class="hamburger-line line-3"></span>
+                </button>
+            </div>
+
         </div>
     </header>
-    <!-- Yon menyu (Tillar va Sozlamalar) -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-    <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <span class="logo">MUNDARIJA</span>
-            <button class="close-sidebar" id="closeMenuBtn">&times;</button>
-        </div>
 
-        <div>
-            <div class="menu-section-title" id="langSectionTitle">Tillar</div>
-            <div class="lang-list">
-                <button class="lang-btn active" data-lang="uz">🇺🇿 O'zbekcha</button>
-                <button class="lang-btn" data-lang="ru">🇷🇺 Русский</button>
-                <button class="lang-btn" data-lang="en">🇬🇧 English</button>
-            </div>
-        </div>
+    <!-- =================================================================
+         2. INSTAGRAM USLUBIDAGI YON PANEL (SIDE DRAWER MENU)
+         Tepa o'ng burchakdagi 3 chiziq bosilganda ochiladigan qism
+    ================================================================== -->
+    <div class="drawer-backdrop" id="drawer-backdrop"></div>
 
-        <div>
-            <div class="menu-section-title" id="settingsSectionTitle">Boshqaruv</div>
-            <button class="settings-btn" id="openSettingsBtn">
-                ⚙️ <span id="settingsBtnText">Sozlamalar</span>
+    <aside class="instagram-side-drawer" id="side-drawer" aria-hidden="true">
+        
+        <!-- Panel yuqori qismi (Sarlavha va Yopish tugmasi) -->
+        <div class="drawer-header">
+            <h3 class="drawer-title">Boshqaruv paneli</h3>
+            <button class="drawer-close-btn" id="close-drawer-btn" aria-label="Yopish">
+                <i class="fas fa-times"></i>
             </button>
         </div>
+
+        <div class="drawer-body">
+
+            <!-- A. AKKOUNT KARTOCHKASI (ACCOUNT CARD) -->
+            <div class="account-card">
+                <div class="account-card-top">
+                    <div class="account-avatar-wrapper">
+                        <img src="https://placeholder.com" alt="Foydalanuvchi rasmi" class="account-avatar">
+                        <span class="online-status-dot" title="Onlayn"></span>
+                    </div>
+                    <div class="account-user-details">
+                        <h4 class="account-fullname">Azizbek Karimov</h4>
+                        <p class="account-username">@azizbek_dev</p>
+                        <span class="account-role-badge">Premium Mijoz</span>
+                    </div>
+                </div>
+                
+                <div class="account-stats-row">
+                    <div class="acc-stat">
+                        <span class="acc-stat-val">4</span>
+                        <span class="acc-stat-lbl">Loyihalar</span>
+                    </div>
+                    <div class="acc-stat">
+                        <span class="acc-stat-val">12</span>
+                        <span class="acc-stat-lbl">Xabarlar</span>
+                    </div>
+                    <div class="acc-stat">
+                        <span class="acc-stat-val">100%</span>
+                        <span class="acc-stat-lbl">Status</span>
+                    </div>
+                </div>
+
+                <div class="account-card-actions">
+                    <a href="#profile" class="btn-account-edit">Profilni tahrirlash</a>
+                    <a href="#cabinet" class="btn-account-cabinet">Shaxsiy kabinet</a>
+                </div>
+            </div>
+
+            <!-- B. TIL TANLASH BO'LIMI (LANGUAGE SELECTOR) -->
+            <div class="drawer-section language-section">
+                <div class="drawer-section-header">
+                    <i class="fas fa-globe"></i>
+                    <span>Tilni tanlang (Language)</span>
+                </div>
+                <div class="language-options-grid">
+                    <button type="button" class="lang-choice-btn active" data-lang="uz">
+                        <span class="lang-code">UZ</span>
+                        <span class="lang-name">O'zbekcha</span>
+                    </button>
+                    <button type="button" class="lang-choice-btn" data-lang="ru">
+                        <span class="lang-code">RU</span>
+                        <span class="lang-name">Русский</span>
+                    </button>
+                    <button type="button" class="lang-choice-btn" data-lang="en">
+                        <span class="lang-code">EN</span>
+                        <span class="lang-name">English</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- C. SOZLAMALAR BO'LIMI (SETTINGS) -->
+            <div class="drawer-section settings-section">
+                <div class="drawer-section-header">
+                    <i class="fas fa-cog"></i>
+                    <span>Sozlamalar</span>
+                </div>
+
+                <ul class="settings-menu-list">
+                    <!-- Tungi rejim (Dark Mode) -->
+                    <li class="settings-menu-item">
+                        <div class="setting-info">
+                            <i class="fas fa-moon setting-icon"></i>
+                            <span>Tungi rejim (Dark Mode)</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="dark-mode-toggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </li>
+
+                    <!-- Bildirishnomalar -->
+                    <li class="settings-menu-item">
+                        <div class="setting-info">
+                            <i class="fas fa-bell setting-icon"></i>
+                            <span>Bildirishnomalar</span>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="notifications-toggle" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </li>
+
+                    <!-- Xavfsizlik va parol -->
+                    <li class="settings-menu-item clickable">
+                        <a href="#security-settings" class="setting-link">
+                            <div class="setting-info">
+                                <i class="fas fa-shield-alt setting-icon"></i>
+                                <span>Xavfsizlik va maxfiylik</span>
+                            </div>
+                            <i class="fas fa-chevron-right arrow-icon"></i>
+                        </a>
+                    </li>
+
+                    <!-- To'lov tarixi -->
+                    <li class="settings-menu-item clickable">
+                        <a href="#billing-settings" class="setting-link">
+                            <div class="setting-info">
+                                <i class="fas fa-credit-card setting-icon"></i>
+                                <span>To'lovlar va shartnomalar</span>
+                            </div>
+                            <i class="fas fa-chevron-right arrow-icon"></i>
+                        </a>
+                    </li>
+
+                    <!-- Yordam markazi -->
+                    <li class="settings-menu-item clickable">
+                        <a href="#help-center" class="setting-link">
+                            <div class="setting-info">
+                                <i class="fas fa-question-circle setting-icon"></i>
+                                <span>Yordam va qo'llab-quvvatlash</span>
+                            </div>
+                            <i class="fas fa-chevron-right arrow-icon"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Panel pastki qismi (Akkountdan chiqish) -->
+        <div class="drawer-footer">
+            <button type="button" class="btn-logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Hisobdan chiqish</span>
+            </button>
+        </div>
+
     </aside>
 
-    <!-- Sozlamalar oynasi -->
-    <div class="modal" id="settingsModal">
-        <div class="modal-content">
-            <h3 id="settingsModalTitle">Sozlamalar</h3>
-            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0;">
-                <span id="darkModeLabel">Tungi rejim</span>
-                <input type="checkbox" id="darkModeToggle" style="width:20px; height:20px;">
-            </div>
-            <div class="modal-buttons">
-                <button class="btn btn-save" id="closeSettingsBtn">Yopish</button>
-            </div>
-        </div>
-    </div>
+    <!-- =================================================================
+         3. ASOSIY KONTENT QISMI (MAIN)
+    ================================================================== -->
+    <main id="main-content">
 
-    <main>
-        <div class="create-post-card" id="openModalBtn">
-            <div class="plus-circle">+</div>
-            <div class="create-post-text">Yangi Post yaratish</div>
-        </div>
+        <!-- HERO BO'LIMI: HARFMA-HARF YOZILADIGAN "ASSALOMU ALAYKUM" QISMI -->
+        <section class="hero-section" id="home">
+            <div class="container hero-container">
+                <div class="hero-text-box">
+                    <span class="hero-welcome-tag">Xush kelibsiz</span>
+                    
+                    <!-- Harfma-harf yozilib o'chib turuvchi sarlavha konteyneri -->
+                    <h1 class="hero-typing-heading">
+                        <span class="static-greeting">Assalomu alaykum, </span>
+                        <br>
+                        <span 
+                            class="typewriter-text" 
+                            id="typewriter-target"
+                            data-phrases='[
+                                "bizning rasmiy veb-saytimizga xush kelibsiz!",
+                                "biznesingizni biz bilan rivojlantiring!",
+                                "eng zamonaviy yechimlarni taqdim etamiz!",
+                                "kelajak texnologiyalarini birga quramiz!"
+                            ]'>
+                            bizning rasmiy veb-saytimizga xush kelibsiz!
+                        </span>
+                        <span class="typing-cursor" aria-hidden="true">|</span>
+                    </h1>
 
-        <div class="posts-container" id="postsContainer"></div>
+                    <p class="hero-subtitle">
+                        Kompaniyamiz mijozlarga yuqori sifatli xizmatlar, innovatsion yondashuv va ishonchli hamkorlikni taklif etadi. Har bir loyihaga professional tarzda yondashamiz.
+                    </p>
+
+                    <div class="hero-action-buttons">
+                        <a href="#services" class="btn btn-primary">Xizmatlar bilan tanishish</a>
+                        <a href="#contact" class="btn btn-secondary">Bepul maslahat olish</a>
+                    </div>
+
+                    <!-- Kompaniya ko'rsatkichlari -->
+                    <div class="hero-metrics">
+                        <div class="metric-item">
+                            <strong class="metric-number">10+</strong>
+                            <span class="metric-text">Yillik tajriba</span>
+                        </div>
+                        <div class="metric-item">
+                            <strong class="metric-number">500+</strong>
+                            <span class="metric-text">Mamnun mijozlar</span>
+                        </div>
+                        <div class="metric-item">
+                            <strong class="metric-number">99%</strong>
+                            <span class="metric-text">Sifat kafolati</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-visual-box">
+                    <div class="hero-image-card">
+                        <img src="https://placeholder.com" alt="Kompaniya jamoasi">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- KOMPANIYA HAQIDA BO'LIMI (ABOUT US) -->
+        <section class="about-section section-block" id="about">
+            <div class="container about-container">
+                <div class="about-media">
+                    <img src="https://placeholder.com" alt="Kompaniya binosi" class="about-main-img">
+                </div>
+                <div class="about-content">
+                    <span class="section-tag">Kompaniya haqida</span>
+                    <h2 class="section-heading">Biz ishonch va sifat asosida ishlaymiz</h2>
+                    <p class="section-paragraph">
+                        Kompaniyamiz tashkil topgan kundan boshlab bozorda o'zining mustahkam o'rniga ega bo'lib kelmoqda. Bizning asosiy maqsadimiz — mijozlarimizning muammolariga tezkor va samarali yechim topishdir.
+                    </p>
+                    <div class="about-values-grid">
+                        <div class="value-box">
+                            <i class="fas fa-award"></i>
+                            <h4>Yuqori Sifat</h4>
+                            <p>Har bir ish xalqaro standartlar asosida nazorat qilinadi.</p>
+                        </div>
+                        <div class="value-box">
+                            <i class="fas fa-users"></i>
+                            <h4>Kuchli Jamoa</h4>
+                            <p>O'z sohasining yetuk mutaxassislari bir joyda jamlangan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- XIZMATLAR BO'LIMI (SERVICES) -->
+        <section class="services-section section-block" id="services">
+            <div class="container">
+                <div class="section-header-center">
+                    <span class="section-tag">Xizmatlarimiz</span>
+                    <h2 class="section-heading">Biz taklif qiladigan asosiy yo'nalishlar</h2>
+                    <p class="section-subtext">Sizning talab va istaklaringizga mos keluvchi keng qamrovli xizmatlar ro'yxati.</p>
+                </div>
+
+                <div class="services-cards-grid">
+                    <article class="service-item-card">
+                        <div class="service-icon-box"><i class="fas fa-chart-line"></i></div>
+                        <h3 class="service-card-title">Biznes Konsalting</h3>
+                        <p class="service-card-desc">Kompaniyangiz daromadini oshirish va jarayonlarni tizimlashtirish bo'yicha professional maslahatlar.</p>
+                        <a href="#contact" class="service-more-link">Batafsil ma'lumot <i class="fas fa-arrow-right"></i></a>
+                    </article>
+
+                    <article class="service-item-card">
+                        <div class="service-icon-box"><i class="fas fa-laptop-code"></i></div>
+                        <h3 class="service-card-title">Raqamli Yechimlar</h3>
+                        <p class="service-card-desc">Biznesingizni avtomatlashtirish uchun zamonaviy dasturiy ta'minot va veb-platformalar yaratish.</p>
+                        <a href="#contact" class="service-more-link">Batafsil ma'lumot <i class="fas fa-arrow-right"></i></a>
+                    </article>
+
+                    <article class="service-item-card">
+                        <div class="service-icon-box"><i class="fas fa-bullhorn"></i></div>
+                        <h3 class="service-card-title">Marketing va Brending</h3>
+                        <p class="service-card-desc">Kompaniyangiz brendini bozorda tanitish va yangi mijozlar oqimini jalb qilish strategiyasi.</p>
+                        <a href="#contact" class="service-more-link">Batafsil ma'lumot <i class="fas fa-arrow-right"></i></a>
+                    </article>
+
+                    <article class="service-item-card">
+                        <div class="service-icon-box"><i class="fas fa-headset"></i></div>
+                        <h3 class="service-card-title">Texnik Qo'llab-quvvatlash</h3>
+                        <p class="service-card-desc">Mijozlarimiz uchun 24/7 rejimida uzluksiz servis va texnik xizmat ko'rsatish bo'limi.</p>
+                        <a href="#contact" class="service-more-link">Batafsil ma'lumot <i class="fas fa-arrow-right"></i></a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOYIHALAR BO'LIMI (PROJECTS) -->
+        <section class="projects-section section-block" id="projects">
+            <div class="container">
+                <div class="section-header-center">
+                    <span class="section-tag">Loyihalar</span>
+                    <h2 class="section-heading">Amalga oshirilgan yirik ishlarimiz</h2>
+                </div>
+
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-thumb">
+                            <img src="https://placeholder.com" alt="Loyiha 1">
+                        </div>
+                        <div class="project-body">
+                            <span class="project-category">Korporativ tizim</span>
+                            <h3 class="project-name">Global Trade Holding</h3>
+                            <p class="project-summary">Yirik savdo tarmog'i uchun yagona boshqaruv va monitoring tizimi.</p>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-thumb">
+                            <img src="https://placeholder.com" alt="Loyiha 2">
+                        </div>
+                        <div class="project-body">
+                            <span class="project-category">Mobil platforma</span>
+                            <h3 class="project-name">Smart Logistics Uz</h3>
+                            <p class="project-summary">Yuk tashish jarayonlarini real vaqt rejimida kuzatish ilovasi.</p>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <div class="project-thumb">
+                            <img src="https://placeholder.com" alt="Loyiha 3">
+                        </div>
+                        <div class="project-body">
+                            <span class="project-category">Moliya va Bank</span>
+                            <h3 class="project-name">FinTech Invest Portal</h3>
+                            <p class="project-summary">Investorlar va tadbirkorlarni bog'lovchi xavfsiz moliyaviy portal.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- JAMOA BO'LIMI (TEAM) -->
+        <section class="team-section section-block" id="team">
+            <div class="container">
+                <div class="section-header-center">
+                    <span class="section-tag">Bizning jamoa</span>
+                    <h2 class="section-heading">Kompaniya rahbariyati va mutaxassislari</h2>
+                </div>
+
+                <div class="team-members-grid">
+                    <div class="member-card">
+                        <img src="https://placeholder.com" alt="Rahbar 1" class="member-photo">
+                        <h3 class="member-title">Rustam Qodirov</h3>
+                        <p class="member-position">Bosh direktor (CEO)</p>
+                    </div>
+
+                    <div class="member-card">
+                        <img src="https://placeholder.com" alt="Rahbar 2" class="member-photo">
+                        <h3 class="member-title">Nilufar Mahmudova</h3>
+                        <p class="member-position">Ijrochi direktor (COO)</p>
+                    </div>
+
+                    <div class="member-card">
+                        <img src="https://placeholder.com" alt="Rahbar 3" class="member-photo">
+                        <h3 class="member-title">Bobur Toshmatov</h3>
+                        <p class="member-position">Texnik direktor (CTO)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ALOQA BO'LIMI (CONTACT) -->
+        <section class="contact-section section-block" id="contact">
+            <div class="container contact-grid-wrapper">
+                <div class="contact-left-info">
+                    <span class="section-tag">Bog'lanish</span>
+                    <h2 class="section-heading">Savollaringiz bormi? Biz bilan bog'laning</h2>
+                    <p class="section-paragraph">
+                        Quyidagi ma'lumotlar orqali ofisimizga tashrif buyurishingiz yoki xabar qoldirishingiz mumkin.
+                    </p>
+                    <ul class="contact-info-list">
+                        <li><i class="fas fa-phone"></i> <span>+998 (71) 200-00-00</span></li>
+                        <li><i class="fas fa-envelope"></i> <span>info@kompaniya.uz</span></li>
+                        <li><i class="fas fa-map-marker-alt"></i> <span>Toshkent shahri, Markaziy ko'cha, 1-uy</span></li>
+                    </ul>
+                </div>
+
+                <div class="contact-right-form">
+                    <form action="#" method="POST" class="main-contact-form">
+                        <div class="input-group">
+                            <label for="user-name">Ismingiz</label>
+                            <input type="text" id="user-name" name="name" placeholder="To'liq ismingizni kiriting" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="user-phone">Telefon raqamingiz</label>
+                            <input type="tel" id="user-phone" name="phone" placeholder="+998 (__) ___-__-__" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="user-msg">Xabaringiz</label>
+                            <textarea id="user-msg" name="message" rows="4" placeholder="Murojaatingiz mazmunini yozing..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Murojaatni yuborish</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <!-- Yangi post yaratish oynasi -->
-    <div class="modal" id="postModal">
-        <div class="modal-content">
-            <h3>Yangi post</h3>
-            <input type="text" id="postTitle" placeholder="Sarlavha...">
-            <textarea id="postBody" rows="4" placeholder="Post matnini kiriting..."></textarea>
-            <div class="modal-buttons">
-                <button class="btn btn-cancel" id="closeModalBtn">Bekor qilish</button>
-                <button class="btn btn-save" id="savePostBtn">Joylashtirish</button>
+    <!-- =================================================================
+         4. SAYT PASTKI QISMI (FOOTER)
+    ================================================================== -->
+    <footer class="main-footer">
+        <div class="container footer-top-grid">
+            <div class="footer-brand-col">
+                <a href="#home" class="footer-logo">Kompaniya<strong>Uz</strong></a>
+                <p class="footer-desc">
+                    Zamonaviy biznes yechimlari va ishonchli hamkorlik markazi.
+                </p>
+            </div>
+
+            <div class="footer-links-col">
+                <h4>Bo'limlar</h4>
+                <ul>
+                    <li><a href="#home">Bosh sahifa</a></li>
+                    <li><a href="#about">Kompaniya haqida</a></li>
+                    <li><a href="#services">Xizmatlar</a></li>
+                    <li><a href="#projects">Loyihalar</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-links-col">
+                <h4>Ijtimoiy tarmoqlar</h4>
+                <ul>
+                    <li><a href="#">Telegram</a></li>
+                    <li><a href="#">Instagram</a></li>
+                    <li><a href="#">YouTube</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                </ul>
             </div>
         </div>
-    </div>
 
-    <script>
-        const openModalBtn = document.getElementById('openModalBtn');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const postModal = document.getElementById('postModal');
-        const savePostBtn = document.getElementById('savePostBtn');
-        const postsContainer = document.getElementById('postsContainer');
-        const searchInput = document.getElementById('searchInput');
+        <div class="footer-copyright">
+            <div class="container">
+                <p>&copy; 2026 KompaniyaUz. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
 
-        // Modalni ochish va yopish
-        openModalBtn.addEventListener('click', () => {
-            postModal.classList.add('active');
-        });
-
-        closeModalBtn.addEventListener('click', () => {
-            postModal.classList.remove('active');
-        });
-
-        // Yangi post qo'shish
-        savePostBtn.addEventListener('click', () => {
-            const title = document.getElementById('postTitle').value.trim();
-            const body = document.getElementById('postBody').value.trim();
-
-            if (!title && !body) return;
-
-            const postEl = document.createElement('div');
-            postEl.className = 'post-item';
-            postEl.innerHTML = `
-                <h3>${title || 'Sarlavhasiz'}</h3>
-                <p>${body}</p>
-            `;
-
-            postsContainer.prepend(postEl);
-
-            document.getElementById('postTitle').value = '';
-            document.getElementById('postBody').value = '';
-            postModal.classList.remove('active');
-        });
-
-        // Qidiruv funksiyasi
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.toLowerCase();
-            const posts = document.querySelectorAll('.post-item');
-
-            posts.forEach(post => {
-                const text = post.innerText.toLowerCase();
-                post.style.display = text.includes(query) ? 'block' : 'none';
-            });
-        });
-                // Menyu ochish va yopish
-        const sidebar = document.getElementById('sidebar');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
-
-        document.getElementById('openMenuBtn').addEventListener('click', () => {
-            sidebar.classList.add('active');
-            sidebarOverlay.classList.add('active');
-        });
-
-        function closeSidebarMenu() {
-            sidebar.classList.remove('active');
-            sidebarOverlay.classList.remove('active');
-        }
-
-        document.getElementById('closeMenuBtn').addEventListener('click', closeSidebarMenu);
-        sidebarOverlay.addEventListener('click', closeSidebarMenu);
-
-        // Tillarni o'zgartirish
-        const langData = {
-            uz: { search: "Qidirish...", create: "Yangi Post yaratish", lang: "Tillar", manage: "Boshqaruv", settings: "Sozlamalar", dark: "Tungi rejim", close: "Yopish" },
-            ru: { search: "Поиск...", create: "Создать новый пост", lang: "Языки", manage: "Управление", settings: "Настройки", dark: "Темный режим", close: "Закрыть" },
-            en: { search: "Search...", create: "Create New Post", lang: "Languages", manage: "Menu", settings: "Settings", dark: "Dark Mode", close: "Close" }
-        };
-
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                
-                const t = langData[btn.dataset.lang];
-                if (document.getElementById('searchInput')) document.getElementById('searchInput').placeholder = t.search;
-                if (document.querySelector('.create-post-text')) document.querySelector('.create-post-text').textContent = t.create;
-                document.getElementById('langSectionTitle').textContent = t.lang;
-                document.getElementById('settingsSectionTitle').textContent = t.manage;
-                document.getElementById('settingsBtnText').textContent = t.settings;
-                document.getElementById('settingsModalTitle').textContent = t.settings;
-                document.getElementById('darkModeLabel').textContent = t.dark;
-                document.getElementById('closeSettingsBtn').textContent = t.close;
-            });
-        });
-
-        // Sozlamalar va Tungi rejim
-        const settingsModal = document.getElementById('settingsModal');
-        document.getElementById('openSettingsBtn').addEventListener('click', () => {
-            closeSidebarMenu();
-            settingsModal.classList.add('active');
-        });
-        document.getElementById('closeSettingsBtn').addEventListener('click', () => {
-            settingsModal.classList.remove('active');
-        });
-        document.getElementById('darkModeToggle').addEventListener('change', (e) => {
-            document.body.classList.toggle('dark-mode', e.target.checked);
-        });
-// IndexedDB yordamida rasm va videolarni doimiy saqlash
-const dbName = 'MundarijaPostsDB';
-let db;
-
-const request = indexedDB.open(dbName, 1);
-request.onupgradeneeded = (e) => {
-  db = e.target.result;
-  if (!db.objectStoreNames.contains('posts')) {
-    db.createObjectStore('posts', { keyPath: 'id', autoIncrement: true });
-  }
-};
-
-request.onsuccess = (e) => {
-  db = e.target.result;
-  loadSavedPosts(); // Sahifa ochilganda eski postlarni yuklash
-};
-
-const createCard = document.querySelector('.create-post-card') || document.querySelector('.create-post-text')?.parentElement;
-
-if (createCard) {
-  const fileInput = document.createElement('input');
-  fileInput.type = 'file';
-  fileInput.accept = 'image/*,video/*';
-  fileInput.style.display = 'none';
-  document.body.appendChild(fileInput);
-
-  createCard.style.cursor = 'pointer';
-  createCard.addEventListener('click', () => fileInput.click());
-
-  fileInput.addEventListener('change', (e) => {
-    const file = e.target.files;
-    if (!file || !db) return;
-
-    const tx = db.transaction('posts', 'readwrite');
-    const store = tx.objectStore('posts');
-    const postData = { file: file, type: file.type, date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) };
-    
-    const addReq = store.add(postData);
-    addReq.onsuccess = (ev) => {
-      postData.id = ev.target.result;
-      renderPost(postData);
-    };
-
-    e.target.value = '';
-  });
-}
-
-// Saqlangan postlarni ekranga chiqarish
-function loadSavedPosts() {
-  if (!db) return;
-  const tx = db.transaction('posts', 'readonly');
-  const store = tx.objectStore('posts');
-  store.getAll().onsuccess = (e) => {
-    const posts = e.target.result;
-    posts.forEach(post => renderPost(post));
-  };
-}
-
-// Postni chizish va o'chirish tugmasini qo'shish
-function renderPost(post) {
-  if (!createCard) return;
-  const fileURL = URL.createObjectURL(post.file);
-  const postItem = document.createElement('div');
-  postItem.className = 'post-item';
-  postItem.style.cssText = 'background:#fff; padding:12px; border-radius:16px; margin-top:16px; box-shadow:0 2px 8px rgba(0,0,0,0.08); position:relative;';
-
-  let mediaHTML = '';
-  if (post.type.startsWith('image/')) {
-    mediaHTML = `<img src="${fileURL}" style="width:100%; border-radius:12px; display:block;">`;
-  } else if (post.type.startsWith('video/')) {
-    mediaHTML = `<video src="${fileURL}" controls style="width:100%; border-radius:12px; display:block;"></video>`;
-  }
-
-  postItem.innerHTML = `
-    ${mediaHTML}
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:12px; color:#888;">
-      <span>${post.date}</span>
-      <button onclick="deletePost(${post.id}, this)" style="background:#ff4d4d; color:#fff; border:none; padding:4px 10px; border-radius:6px; cursor:pointer;">O'chirish</button>
-    </div>
-  `;
-
-  createCard.insertAdjacentElement('afterend', postItem);
-}
-
-// Postni bazadan o'chirish
-function deletePost(id, btn) {
-  const tx = db.transaction('posts', 'readwrite');
-  tx.objectStore('posts').delete(id);
-  btn.closest('.post-item').remove();
-}
-
-
-    </script>
+    <!-- Keyingi bosqichda harfma-harf yozish va 3 chiziqli menyuni ochish uchun JS ulanadi -->
+    <script src="script.js"></script>
 </body>
 </html>
