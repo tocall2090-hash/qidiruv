@@ -505,6 +505,38 @@ body.dark-mode .create-post-text { color: #ffffff; }
         document.getElementById('darkModeToggle').addEventListener('change', (e) => {
             document.body.classList.toggle('dark-mode', e.target.checked);
         });
+// Galereyadan rasm/video tanlab post qo'shish
+const createCard = document.querySelector('.create-post-card') || document.querySelector('.create-post-text')?.parentElement;
+
+if (createCard) {
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/*,video/*';
+  fileInput.style.display = 'none';
+  document.body.appendChild(fileInput);
+
+  createCard.style.cursor = 'pointer';
+  createCard.addEventListener('click', () => fileInput.click());
+
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const fileURL = URL.createObjectURL(file);
+    const postItem = document.createElement('div');
+    postItem.className = 'post-item';
+    postItem.style.cssText = 'background:#fff; padding:12px; border-radius:16px; margin-top:16px; box-shadow:0 2px 8px rgba(0,0,0,0.08);';
+
+    if (file.type.startsWith('image/')) {
+      postItem.innerHTML = `<img src="${fileURL}" style="width:100%; border-radius:12px; display:block;">`;
+    } else if (file.type.startsWith('video/')) {
+      postItem.innerHTML = `<video src="${fileURL}" controls style="width:100%; border-radius:12px; display:block;"></video>`;
+    }
+
+    createCard.insertAdjacentElement('afterend', postItem);
+    e.target.value = '';
+  });
+}
 
     </script>
 </body>
