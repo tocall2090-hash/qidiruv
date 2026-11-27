@@ -229,13 +229,105 @@
                 width: 170px;
             }
         }
+        /* Yon menyu (Sidebar) */
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 200;
+}
+.sidebar-overlay.active { display: block; }
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -290px;
+    width: 280px;
+    height: 100%;
+    background: #ffffff;
+    z-index: 300;
+    padding: 24px 20px;
+    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.sidebar.active { left: 0; }
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e4e8ee;
+    padding-bottom: 14px;
+}
+.close-sidebar {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+.menu-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #65676b;
+    margin-bottom: 10px;
+}
+.lang-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.lang-btn {
+    padding: 10px 14px;
+    border: 1px solid #e4e8ee;
+    border-radius: 10px;
+    background: transparent;
+    font-size: 15px;
+    cursor: pointer;
+    text-align: left;
+}
+.lang-btn.active {
+    background-color: #1c1e21;
+    color: #ffffff;
+    border-color: #1c1e21;
+    font-weight: 600;
+}
+.settings-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: none;
+    background-color: #f0f2f5;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* Tungi rejim (Dark mode) */
+body.dark-mode { background-color: #121212; color: #e4e6eb; }
+body.dark-mode header,
+body.dark-mode .sidebar,
+body.dark-mode .create-post-card,
+body.dark-mode .post-item,
+body.dark-mode .modal-content { background-color: #1e1e1e; color: #e4e6eb; }
+body.dark-mode .menu-btn span { background-color: #e4e6eb; }
+body.dark-mode .logo,
+body.dark-mode .create-post-text { color: #ffffff; }
+
     </style>
 </head>
 <body>
 
     <header>
         <div class="header-left">
-            <button class="menu-btn" aria-label="Menyu">
+            <button class="menu-btn" id="openMenuBtn" aria-label="Menyu"> 
                 <span></span>
                 <span></span>
                 <span></span>
@@ -251,6 +343,44 @@
             <input type="text" id="searchInput" placeholder="Qidirish...">
         </div>
     </header>
+    <!-- Yon menyu (Tillar va Sozlamalar) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span class="logo">MUNDARIJA</span>
+            <button class="close-sidebar" id="closeMenuBtn">&times;</button>
+        </div>
+
+        <div>
+            <div class="menu-section-title" id="langSectionTitle">Tillar</div>
+            <div class="lang-list">
+                <button class="lang-btn active" data-lang="uz">🇺🇿 O'zbekcha</button>
+                <button class="lang-btn" data-lang="ru">🇷🇺 Русский</button>
+                <button class="lang-btn" data-lang="en">🇬🇧 English</button>
+            </div>
+        </div>
+
+        <div>
+            <div class="menu-section-title" id="settingsSectionTitle">Boshqaruv</div>
+            <button class="settings-btn" id="openSettingsBtn">
+                ⚙️ <span id="settingsBtnText">Sozlamalar</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Sozlamalar oynasi -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <h3 id="settingsModalTitle">Sozlamalar</h3>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0;">
+                <span id="darkModeLabel">Tungi rejim</span>
+                <input type="checkbox" id="darkModeToggle" style="width:20px; height:20px;">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-save" id="closeSettingsBtn">Yopish</button>
+            </div>
+        </div>
+    </div>
 
     <main>
         <div class="create-post-card" id="openModalBtn">
@@ -322,6 +452,60 @@
                 post.style.display = text.includes(query) ? 'block' : 'none';
             });
         });
+                // Menyu ochish va yopish
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        document.getElementById('openMenuBtn').addEventListener('click', () => {
+            sidebar.classList.add('active');
+            sidebarOverlay.classList.add('active');
+        });
+
+        function closeSidebarMenu() {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        }
+
+        document.getElementById('closeMenuBtn').addEventListener('click', closeSidebarMenu);
+        sidebarOverlay.addEventListener('click', closeSidebarMenu);
+
+        // Tillarni o'zgartirish
+        const langData = {
+            uz: { search: "Qidirish...", create: "Yangi Post yaratish", lang: "Tillar", manage: "Boshqaruv", settings: "Sozlamalar", dark: "Tungi rejim", close: "Yopish" },
+            ru: { search: "Поиск...", create: "Создать новый пост", lang: "Языки", manage: "Управление", settings: "Настройки", dark: "Темный режим", close: "Закрыть" },
+            en: { search: "Search...", create: "Create New Post", lang: "Languages", manage: "Menu", settings: "Settings", dark: "Dark Mode", close: "Close" }
+        };
+
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const t = langData[btn.dataset.lang];
+                if (document.getElementById('searchInput')) document.getElementById('searchInput').placeholder = t.search;
+                if (document.querySelector('.create-post-text')) document.querySelector('.create-post-text').textContent = t.create;
+                document.getElementById('langSectionTitle').textContent = t.lang;
+                document.getElementById('settingsSectionTitle').textContent = t.manage;
+                document.getElementById('settingsBtnText').textContent = t.settings;
+                document.getElementById('settingsModalTitle').textContent = t.settings;
+                document.getElementById('darkModeLabel').textContent = t.dark;
+                document.getElementById('closeSettingsBtn').textContent = t.close;
+            });
+        });
+
+        // Sozlamalar va Tungi rejim
+        const settingsModal = document.getElementById('settingsModal');
+        document.getElementById('openSettingsBtn').addEventListener('click', () => {
+            closeSidebarMenu();
+            settingsModal.classList.add('active');
+        });
+        document.getElementById('closeSettingsBtn').addEventListener('click', () => {
+            settingsModal.classList.remove('active');
+        });
+        document.getElementById('darkModeToggle').addEventListener('change', (e) => {
+            document.body.classList.toggle('dark-mode', e.target.checked);
+        });
+
     </script>
 </body>
 </html>
